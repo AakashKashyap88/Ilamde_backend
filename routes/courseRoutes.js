@@ -106,8 +106,24 @@ try{
     return res.status(500).json({ error: "Internal Server Error" });
 }
     
-
 })
+
+route.get("/getcoursebyname", async (req,res)=>{
+    try{
+        const data = req.query.title; 
+        const course = await Courses.find({title:data})
+        console.log(data)
+        console.log(course)
+    
+       return res.status(200).json(course)
+    }catch(e){
+        console.log("error", e)
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+        
+    })
+    
+
 
 
 module.exports = route;
