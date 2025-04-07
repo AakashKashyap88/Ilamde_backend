@@ -11,6 +11,18 @@ const userSchema=mongoose.Schema({
     city: { type: String, default: null },
     enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Courses" ,default:null}],
     profilePic:{type: String,default:"/uploads/userbhai.png"},
+    cart: [
+      {
+        courseId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Courses",
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        }
+      }
+    ]
 },{ timestamps: true })
 
 userSchema.pre("save", async function (next) {

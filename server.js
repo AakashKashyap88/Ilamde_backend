@@ -28,6 +28,11 @@ app.use("/category",categoryRoutes)
 const recommededCourseRoute = require("./routes/recommendedcoureseRoute")
 app.use("/recommended",recommededCourseRoute)
 
+const carts=require("./routes/cartRoute")
+app.use("/cart",carts)
+
+
+
 const PORT=process.env.PORT || 3000
 
 app.listen(3000, () => {
