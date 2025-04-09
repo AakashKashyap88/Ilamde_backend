@@ -24,7 +24,8 @@ router.post('/add', jwtMiddleWare, async (req, res) => {
   
       if (existingItemIndex > -1) {
         // If already added, increase quantity
-        user.cart[existingItemIndex].quantity += 1;
+        // user.cart[existingItemIndex].quantity += 1;
+        return res.status(200).json({message:'Course already added to your cart'})
       } else {
         // Else add new course to cart
         user.cart.push({ courseId });
@@ -44,12 +45,13 @@ router.post('/add', jwtMiddleWare, async (req, res) => {
     try{
     
         const userId=req.jwtPayload.id;
+
         if (!userId) {
             return res.status(400).json({ message: "User ID not found in token" });
           }
           const user = await User.findById(userId).populate({
             path: 'cart.courseId',
-            select: 'title price courseimages module coursereviews -_id',
+            select: '_id title price courseimages module coursereviews ',
           });
 
           if (!user) {
@@ -57,6 +59,10 @@ router.post('/add', jwtMiddleWare, async (req, res) => {
           }
          
           let totalPrice = 0;
+
+
+         
+
           const cartItems = user.cart.map(item => {
       const course = item.courseId;
       const quantity = item.quantity;
@@ -84,11 +90,13 @@ router.post('/add', jwtMiddleWare, async (req, res) => {
   });
 
 
-  router.delete('/remove/:courseId', jwtMiddleWare, async (req, res) => {
+  router.delete('/remove', jwtMiddleWare, async (req, res) => {
     try {
       const userId = req.jwtPayload.id;
-      const courseId = req.params.courseId;
+      const courseId = req.query.courseId; 
   
+      // console.log("courseId from query:", courseId);
+      // console.log("isValid check:", mongoose.Types.ObjectId.isValid(courseId));
       if (!mongoose.Types.ObjectId.isValid(courseId)) {
         return res.status(400).json({ message: "Invalid course ID" });
       }
@@ -102,6 +110,9 @@ router.post('/add', jwtMiddleWare, async (req, res) => {
         return res.status(404).json({ message: 'User not found' });
       }
   
+      console.log("Before removing, user cart is:", user.cart);
+      
+
       // Remove course from cart
       user.cart = user.cart.filter(item => item.courseId._id.toString() !== courseId);
       await user.save();
@@ -113,7 +124,6 @@ router.post('/add', jwtMiddleWare, async (req, res) => {
   
       res.status(200).json({ 
         message: 'Course removed from cart successfully', 
-        cart: user.cart, 
         totalPrice 
       });
     } catch (error) {

@@ -31,6 +31,8 @@ app.use("/recommended",recommededCourseRoute)
 const carts=require("./routes/cartRoute")
 app.use("/cart",carts)
 
+const calender=require("./routes/coursecalenderRoute")
+app.use("/event",calender)
 
 
 const PORT=process.env.PORT || 3000
