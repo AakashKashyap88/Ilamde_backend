@@ -28,9 +28,24 @@ const courseCalenderSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    eventImages:{type: String
-    }
-
+    eventImages:{type: String,
+        required: true
+    },
+    toDate:{
+        type: String,
+        required: true
+    },
+    fromDate:{
+        type: String,
+        required: true 
+    },
+    about:{
+        type: String,
+        required: true},
+    
+    venue:{
+            type: String,
+            required: true}
 }, { timestamps: true });
 
 const CourseCalender = mongoose.model("CourseCalender", courseCalenderSchema);
