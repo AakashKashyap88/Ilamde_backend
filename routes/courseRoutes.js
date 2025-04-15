@@ -67,7 +67,7 @@ route.post("/createrecommendedcourses",upload.single("photo"),async (req,res)=>{
 })
 
 
-route.put("/updateCourse/:id",jwtMiddleWare, async (req,res)=>{
+route.put("/updateCourse/:id", async (req,res)=>{
     try{
     
     const CourseId = req.params.id;

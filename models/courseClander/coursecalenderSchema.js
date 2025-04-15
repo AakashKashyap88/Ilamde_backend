@@ -42,6 +42,10 @@ const courseCalenderSchema = mongoose.Schema({
     about:{
         type: String,
         required: true},
+
+    bigAbout:{
+        type:String
+    },    
     
     venue:{
             type: String,
