@@ -34,6 +34,8 @@ app.use("/cart",carts)
 const calender=require("./routes/coursecalenderRoute")
 app.use("/event",calender)
 
+const order=require("./routes/create_orderRoute")
+app.use("/order",order)
 
 const PORT=process.env.PORT || 3000
 

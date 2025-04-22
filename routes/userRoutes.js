@@ -90,13 +90,13 @@ route.post("/login", validateEmail,async (req,res)=>{
       
     console.log("Extracted User ID:", userId);
 
-    // // Convert userId to ObjectId
-    // const objectId = new mongoose.Types.ObjectId(userId);
-    // console.log("Converted ObjectId:", objectId);
+    // Convert userId to ObjectId
+    const objectId = new mongoose.Types.ObjectId(userId);
+    console.log("Converted ObjectId:", objectId);
 
 
 
-    const response = await Users.findOne({ _id: userId})
+    const response = await Users.findOne({ _id: objectId})
 
  if (!response) {
       return res.status(404).json({ error: "User Not Found!" });
@@ -109,7 +109,6 @@ route.post("/login", validateEmail,async (req,res)=>{
    }
    
     })
-
 
     route.put("/update",jwtMiddleWare,async (req,res)=>{
       try{
@@ -175,6 +174,27 @@ route.post("/login", validateEmail,async (req,res)=>{
 
     })
 
+    route.get("/enrolled-courses", jwtMiddleWare, async (req, res) => {
+      try {
+        const userId = req.jwtPayload.id;
+    
+        const user = await Users.findById(userId)
+          .populate("enrolledCourses.courseId") // 👈 Populate courseId inside enrolledCourses
+          .select("username email enrolledCourses");
+    
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
+    
+        res.status(200).json({
+          message: "Enrolled courses fetched successfully",
+          enrolledCourses: user.enrolledCourses,
+        });
+      } catch (error) {
+        console.error("Error fetching enrolled courses:", error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
 
   
 

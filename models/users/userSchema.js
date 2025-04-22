@@ -9,7 +9,14 @@ const userSchema=mongoose.Schema({
     password:{type:String,required:true},
     gender:{ type : String, default: null },
     city: { type: String, default: null },
-    enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Courses" ,default:null}],
+    enrolledCourses: [{
+      courseId: { type: mongoose.Schema.Types.ObjectId, ref: "Courses" },
+      enrollmentDate: { type: Date, required: true },
+      expiryDate: { type: Date, required: true },
+      accessLevel: { type: Number, default: 0 },
+      paidAmount:{type:Number, default: 0 },
+      remaingAmount:{type:Number, default: 0 }
+    }],
     profilePic:{type: String,default:"/uploads/userbhai.png"},
     cart: [
       {
@@ -18,7 +25,7 @@ const userSchema=mongoose.Schema({
           ref: "Courses",
         },
         quantity: {
-          type: Number,
+          type: Number, 
           default: 1,
         }
       }
